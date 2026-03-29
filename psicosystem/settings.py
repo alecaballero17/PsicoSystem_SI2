@@ -122,3 +122,6 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 AUTH_USER_MODEL = 'core.Usuario'
+
+LOGIN_REDIRECT_URL = '/admin/' # Por ahora al admin, luego a un Dashboard
+LOGOUT_REDIRECT_URL = '/login/'
