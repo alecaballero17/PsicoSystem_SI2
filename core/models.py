@@ -19,7 +19,12 @@ class Clinica(models.Model):
 # Extendemos el usuario para que pertenezca a una clínica
 class Usuario(AbstractUser):
     clinica = models.ForeignKey(Clinica, on_delete=models.CASCADE, null=True, blank=True)
-    es_psicologo = models.BooleanField(default=False)
+    # VERIFICA QUE ESTA LÍNEA EXISTA:
+    rol = models.CharField(max_length=20, choices=[
+        ('ADMIN', 'Administrador'),
+        ('PSICOLOGO', 'Psicólogo'),
+        ('PACIENTE', 'Paciente')
+    ], default='PSICOLOGO')
 
 # Módulo de Gestión de Pacientes (Aislado por clínica)
 class Paciente(models.Model):

@@ -13,3 +13,28 @@ class ClinicaForm(forms.ModelForm):
             'nit': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'NIT de la institución'}),
             'plan_suscripcion': forms.Select(attrs={'class': 'form-select'}),
         }
+
+
+from django.contrib.auth.forms import UserCreationForm
+from .models import Usuario, Clinica
+
+# core/forms.py
+
+class RegistroUsuarioForm(UserCreationForm):
+    class Meta:
+        model = Usuario
+        fields = ['username', 'email', 'first_name', 'last_name', 'clinica', 'rol']
+        # Aquí personalizamos los nombres que se ven en pantalla
+        labels = {
+            'username': 'Nombre de usuario',
+            'email': 'Correo electrónico',
+            'first_name': 'Nombres',
+            'last_name': 'Apellidos',
+            'clinica': 'Clínica asignada',
+            'rol': 'Rol del usuario',
+        }
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs.update({'class': 'form-control'})

@@ -13,3 +13,18 @@ def registrar_clinica_view(request):
         form = ClinicaForm()
     
     return render(request, 'core/registrar_clinica.html', {'form': form})
+
+
+from .forms import RegistroUsuarioForm # Asegúrate de importar el nuevo form
+
+def registrar_usuario_view(request):
+    # Lógica del CU02: Registro de Usuario/Psicólogo
+    if request.method == 'POST':
+        form = RegistroUsuarioForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('admin:index')
+    else:
+        form = RegistroUsuarioForm()
+    
+    return render(request, 'core/registrar_usuario.html', {'form': form})
