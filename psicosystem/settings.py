@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'rest_framework',
     'core',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -128,3 +129,14 @@ LOGIN_URL = '/login/'
 
 LOGIN_REDIRECT_URL = '/admin/' # Por ahora al admin, luego a un Dashboard
 LOGOUT_REDIRECT_URL = '/login/'
+
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+}
