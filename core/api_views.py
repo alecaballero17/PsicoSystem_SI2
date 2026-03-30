@@ -1,8 +1,14 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.views import TokenObtainPairView
 from .models import Paciente
-from .serializers import PacienteSerializer
+from .serializers import PacienteSerializer, MyTokenObtainPairSerializer
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    # Usa nuestro serializador personalizado en lugar del que viene por defecto
+    serializer_class = MyTokenObtainPairSerializer
+
 
 class PacienteListAPIView(APIView):
     # Solo usuarios con Token JWT válido pueden entrar

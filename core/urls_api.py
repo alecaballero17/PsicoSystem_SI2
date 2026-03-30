@@ -1,10 +1,10 @@
 from django.urls import path
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from core.api_views import PacienteListAPIView
+from rest_framework_simplejwt.views import TokenRefreshView
+from core.api_views import PacienteListAPIView, MyTokenObtainPairView
 
 urlpatterns = [
     # Endpoints para obtener y refrescar el Token JWT
-    path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     
     # Endpoint para ver pacientes

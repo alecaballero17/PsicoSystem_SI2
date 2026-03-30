@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 
 # IMPORTACIÓN DE MODELOS (Esto corrige el NameError)
 from .models import Clinica, Usuario, Paciente 
@@ -8,6 +8,16 @@ from .models import Clinica, Usuario, Paciente
 from .forms import ClinicaForm, RegistroUsuarioForm, PacienteForm
 
 # --- CASOS DE USO ---
+
+def is_admin(user):
+    return user.is_authenticated and (getattr(user, 'rol', None) == 'ADMIN' or user.is_superuser)
+
+def admin_required(view_func):
+    """
+    T018: Decorador para verificar si el usuario tiene rol de ADMIN.
+    Redirige al dashboard si no tiene permisos.
+    """
+    return user_passes_test(is_admin, login_url='dashboard')(view_func)
 
 @login_required 
 def dashboard_view(request):
@@ -19,6 +29,7 @@ def dashboard_view(request):
     return render(request, 'core/dashboard.html', {'pacientes': pacientes})
 
 @login_required
+@admin_required
 def registrar_clinica_view(request):
     """
     CU25: Registro de Clínicas (SaaS Tenant).
@@ -33,6 +44,7 @@ def registrar_clinica_view(request):
     return render(request, 'core/registrar_clinica.html', {'form': form})
 
 @login_required
+@admin_required
 def registrar_usuario_view(request):
     """
     CU02: Registro de Psicólogos.
