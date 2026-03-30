@@ -1,55 +1,64 @@
 from django.shortcuts import render, redirect
-from .forms import ClinicaForm
-from django.contrib.auth.decorators import login_required # Importa el protector
+from django.contrib.auth.decorators import login_required
 
-@login_required # Protege la vista para que solo usuarios autenticados puedan acceder
+# IMPORTACIÓN DE MODELOS (Esto corrige el NameError)
+from .models import Clinica, Usuario, Paciente 
+
+# IMPORTACIÓN DE FORMULARIOS
+from .forms import ClinicaForm, RegistroUsuarioForm, PacienteForm
+
+# --- CASOS DE USO ---
+
+@login_required 
+def dashboard_view(request):
+    """
+    CU03: Dashboard para Psicólogos.
+    Muestra la lista de pacientes filtrada por la clínica del usuario logueado.
+    """
+    pacientes = Paciente.objects.filter(clinica=request.user.clinica)
+    return render(request, 'core/dashboard.html', {'pacientes': pacientes})
+
+@login_required
 def registrar_clinica_view(request):
-    # Lógica del Caso de Uso 25: Registro de Clínicas
+    """
+    CU25: Registro de Clínicas (SaaS Tenant).
+    """
     if request.method == 'POST':
         form = ClinicaForm(request.POST)
         if form.is_valid():
             form.save()
-            # Una vez creada, redirigimos al admin para ver que se guardó
-            return redirect('admin:index') 
+            return redirect('dashboard') # Redirigimos al dashboard ahora que existe
     else:
         form = ClinicaForm()
-    
     return render(request, 'core/registrar_clinica.html', {'form': form})
-    pass
 
-
-
-
-
-from .forms import RegistroUsuarioForm # Asegúrate de importar el nuevo form
-
-@login_required # Protege la vista para que solo usuarios autenticados puedan acceder
+@login_required
 def registrar_usuario_view(request):
-    # Lógica del CU02: Registro de Usuario/Psicólogo
+    """
+    CU02: Registro de Psicólogos.
+    """
     if request.method == 'POST':
         form = RegistroUsuarioForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('admin:index')
+            return redirect('dashboard')
     else:
         form = RegistroUsuarioForm()
-    
     return render(request, 'core/registrar_usuario.html', {'form': form})
-    pass
-
-
-from .forms import PacienteForm
 
 @login_required
 def registrar_paciente_view(request):
+    """
+    CU06: Registro de Pacientes con lógica Multi-tenant.
+    """
     if request.method == 'POST':
         form = PacienteForm(request.POST)
         if form.is_valid():
             paciente = form.save(commit=False)
-            # ASIGNACIÓN AUTOMÁTICA: Tomamos la clínica del usuario logueado
+            # ASIGNACIÓN AUTOMÁTICA de la clínica para aislamiento de datos
             paciente.clinica = request.user.clinica 
             paciente.save()
-            return redirect('admin:index')
+            return redirect('dashboard')
     else:
         form = PacienteForm()
     return render(request, 'core/registrar_paciente.html', {'form': form})

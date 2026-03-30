@@ -1,9 +1,10 @@
 from django.contrib import admin
 from django.urls import path, include  # <-- IMPORTANTE: Añadimos 'include'
-from core.views import registrar_clinica_view, registrar_usuario_view, registrar_paciente_view
+from core.views import registrar_clinica_view, registrar_usuario_view, registrar_paciente_view, dashboard_view # Añade dashboard_view
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
+    path('', dashboard_view, name='dashboard'), # <--- Esta es la ruta que falta para el dashboard
     path('admin/', admin.site.urls),
     
     # --- RUTAS DE LA WEB (Templates/HTML) ---
@@ -18,3 +19,6 @@ urlpatterns = [
     # Esto busca el archivo core/urls_api.py que creamos antes
     path('api/', include('core.urls_api')),
 ]
+
+
+
