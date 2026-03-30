@@ -14,6 +14,6 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
         # Personalización de los claims del payload
         token['rol'] = getattr(user, 'rol', None)
-        token['clinica'] = getattr(user, 'clinica_id', None)
+        token['clinica_id'] = getattr(user, 'clinica_id', None)
 
         return token

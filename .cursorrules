@@ -1,0 +1,5 @@
+Responde siempre en español.
+Al generar mensajes de commit de Git:
+- Deben estar obligatoriamente en español.
+- Usa el formato de Conventional Commits (feat:, fix:, docs:, etc.).
+- Sé conciso y directo.

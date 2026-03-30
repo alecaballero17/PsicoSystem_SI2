@@ -1,6 +1,37 @@
-venv/
+# =========================
+# Python & Django Ignored Files
+# =========================
 *.pyc
+*.pyo
+*.pyd
 __pycache__/
-db.sqlite3
-.vscode/
+*.so
+
+# Environments (Entornos Virtuales)
 .env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Django Defaults
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+media/
+
+# Archivos de SO e IDEs
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Pruebas y Cobertura
+.tox/
+.coverage
+htmlcov/
+pytest_cache/
